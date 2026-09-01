@@ -764,7 +764,8 @@ const LANGUAGES = [{"name": "English", "level": "C2", "pct": 95}, {"name": "Espa
 const GALLERY = ["HFR Cooking.jpg", "HFR Portrait Italy.JPEG", "HFR Camel.JPEG", "HFR Rice Terrace.JPEG"];
 const PALETTE = [{"name": "Terracotta", "hex": "#C1622D"}, {"name": "Sienna", "hex": "#8A4B2F"}, {"name": "Sand", "hex": "#E8DCC8"}, {"name": "Warm Ivory", "hex": "#FAF6EE"}, {"name": "Charcoal Umber", "hex": "#332B24"}, {"name": "Olive Green", "hex": "#6B7A4F"}];
 function detectLang(){
-  const stored = localStorage.getItem('site_lang');
+  let stored = null;
+  try { stored = localStorage.getItem('site_lang'); } catch(e){}
   if(stored) return stored;
   const supported = ['en','es','fr'];
   const browserLangs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || 'en'];
@@ -1174,7 +1175,7 @@ document.getElementById('langSwitcher').addEventListener('click', (e)=>{
   const btn = e.target.closest('.lang-btn');
   if(!btn) return;
   currentLang = btn.dataset.lang;
-  localStorage.setItem('site_lang', currentLang);
+  try { localStorage.setItem('site_lang', currentLang); } catch(e){}
   render();
 });
 
@@ -1276,6 +1277,15 @@ for(let i=0;i<DOT_COUNT;i++){
   pacmanTrack.insertBefore(d, pacmanIcon);
   dotEls.push(d);
 }
+// Dots sit at fixed 20px pitch and don't necessarily span the full track
+// width, while Pac-Man's position is a percentage of the whole track. Eating
+// dots by matching an index-based percentage against that pixel-based
+// position drifts out of sync (dots get left un-eaten after Pac-Man visibly
+// passes them). Instead, measure each dot's real on-screen center once and
+// compare it directly against Pac-Man's real pixel position every time.
+function measureDotCenters(){
+  dotEls.forEach(dot => { dot._center = dot.offsetLeft + dot.offsetWidth / 2; });
+}
 function updatePacman(){
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
   const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -1283,13 +1293,13 @@ function updatePacman(){
   const trackWidth = pacmanTrack.clientWidth - 64; /* account for side padding */
   const leftPx = 32 + (trackWidth * pct / 100);
   pacmanIcon.style.left = leftPx + 'px';
-  dotEls.forEach((dot, i)=>{
-    const dotPct = (i/(DOT_COUNT-1))*100;
-    dot.classList.toggle('eaten', dotPct < pct);
+  dotEls.forEach(dot => {
+    dot.classList.toggle('eaten', dot._center < leftPx);
   });
 }
+measureDotCenters();
 window.addEventListener('scroll', updatePacman, {passive:true});
-window.addEventListener('resize', updatePacman);
+window.addEventListener('resize', ()=>{ measureDotCenters(); updatePacman(); });
 
 render();
 updatePacman();
