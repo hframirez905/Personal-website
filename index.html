@@ -305,6 +305,12 @@ footer h2{position:relative;padding-bottom:20px;text-transform:uppercase;letter-
   opacity:0;pointer-events:none;transition:opacity .15s ease;
 }
 .t-title:hover .click-hint{opacity:1;}
+.tap-icon{
+  display:none; /* shown on mobile only — see phone media query near the end of this stylesheet */
+  width:15px;height:15px;margin-left:7px;vertical-align:middle;
+  background-image:url('Website photos/tap-icon.png');background-size:contain;background-repeat:no-repeat;background-position:center;
+  opacity:0.5;
+}
 .t-node{cursor:pointer;}
 .t-year{font-family:var(--font-label);font-weight:600;color:var(--terracotta);font-size:12.5px;letter-spacing:0.04em;text-transform:uppercase;}
 .t-title{position:relative;display:inline-block;font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:0.02em;margin-top:4px;}
@@ -469,7 +475,10 @@ footer h2{position:relative;padding-bottom:20px;text-transform:uppercase;letter-
 .train-carousel{overflow:hidden;position:relative;}
 .train-track{display:flex;gap:18px;}
 .training-card{
-  flex:0 0 calc((100% - 36px) / 3);
+  /* --train-per-view is set by JS (renderTraining) to match window width, so
+     this formula and the carousel's step math never drift out of sync —
+     the same class of fix used for the Pac-Man dots earlier this session. */
+  flex:0 0 calc((100% - (var(--train-per-view, 3) - 1) * 18px) / var(--train-per-view, 3));
   background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;
   transition:border-color .25s ease, transform .25s ease, box-shadow .25s ease;
 }
@@ -482,7 +491,7 @@ footer h2{position:relative;padding-bottom:20px;text-transform:uppercase;letter-
 .training-card p{font-family:var(--font-label);font-size:13px;letter-spacing:0.01em;color:var(--charcoal-soft);margin-top:8px;}
 .training-card .t-date{font-family:var(--font-label);color:var(--terracotta);font-weight:600;font-size:11.5px;letter-spacing:0.03em;text-transform:uppercase;margin-top:6px;display:block;}
 @media (max-width:760px){
-  .training-card{flex-basis:calc((100% - 24px) / 3);padding:16px 14px;}
+  .training-card{padding:16px 14px;}
   .training-card h3{font-size:12.5px;}
 }
 
@@ -495,7 +504,9 @@ footer h2{position:relative;padding-bottom:20px;text-transform:uppercase;letter-
 .skills-carousel{overflow:hidden;position:relative;}
 .skills-track{display:flex;gap:10px;}
 .skill-pill{
-  flex:0 0 calc((100% - 6 * 10px) / 7);
+  /* --skill-per-view is set by JS (renderTrainingSkills) to match window
+     width, for the same reason as --train-per-view above. */
+  flex:0 0 calc((100% - (var(--skill-per-view, 7) - 1) * 10px) / var(--skill-per-view, 7));
   background:var(--card);border:1px solid var(--line);border-radius:999px;
   padding:9px 8px;text-align:center;
   font-family:var(--font-label);font-size:11.5px;font-weight:600;letter-spacing:0.02em;
@@ -603,7 +614,7 @@ footer h2{color:var(--ivory);}
 .contact-form input,.contact-form textarea{
   width:100%;padding:13px 16px;border-radius:12px;border:1px solid rgba(250,246,238,0.25);
   background:rgba(250,246,238,0.06);color:var(--ivory);font-family:var(--font-display);font-weight:300;
-  font-size:15px;
+  font-size:16px; /* iOS Safari auto-zooms the page on focus for inputs below 16px */
 }
 .contact-form input::placeholder,.contact-form textarea::placeholder{color:rgba(250,246,238,0.45);}
 .contact-form textarea{min-height:120px;resize:vertical;}
@@ -630,6 +641,39 @@ footer h2{color:var(--ivory);}
   #mainNav.open{display:block;}
   .nav-links{flex-direction:column;gap:16px;}
   .topbar-actions{gap:12px;}
+}
+
+/* ---------- MOBILE PHONE ADJUSTMENTS ---------- */
+@media (max-width:480px){
+  /* Problem 1: brand name + hamburger + LinkedIn + 3 language buttons all
+     competing for one row on a ~375px-wide screen. Shrink each element and
+     drop the "Language" caption text (the three round buttons stay, so the
+     control itself is still fully usable, just without the label under it). */
+  .topbar-inner{padding:10px 16px;gap:8px;}
+  .brand{font-size:11.5px;letter-spacing:0.03em;}
+  .nav-toggle{padding:4px 9px;font-size:16px;}
+  .topbar-actions{gap:8px;}
+  .social-circle{width:28px;height:28px;}
+  .social-circle svg{width:13px;height:13px;}
+  .lang-switcher{gap:5px;}
+  .lang-btn{width:28px;height:28px;font-size:8.5px;}
+  .lang-switcher-label{display:none;}
+
+  /* Problem 2: 100px of section padding (150px for the hero) is a lot of a
+     phone's limited screen height to scroll through before reaching content.
+     Roughly halve it so scrolling feels purposeful. */
+  .section{padding:52px 0;}
+  .section-inner{padding:0 20px;}
+  .hero{padding:88px 20px 64px;}
+  footer{padding:56px 0 30px;}
+  .contact-inner{padding:0 20px;}
+
+  /* Problem 5 (tap hint): the "Click me" tooltip only ever shows on hover,
+     which doesn't exist on a touchscreen, so swap it for a small permanent
+     tap icon instead (the underlying tap-to-open behavior already works
+     fine either way — this only changes what hints at it). */
+  .click-hint{display:none;}
+  .tap-icon{display:inline-block;}
 }
 </style>
 </head>
@@ -844,6 +888,11 @@ function detectLang(){
 }
 let currentLang = detectLang();
 
+// True on real mouse/trackpad devices, false on touchscreens — used to keep
+// hover-only interactions (like the timeline photo zoom) working the same
+// way for desktop visitors while giving touch visitors a tap-based fallback.
+const supportsHoverPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
 function photoPath(name){ return "Website photos/" + encodeURIComponent(name).replace(/%20/g,'%20'); }
 
 function renderNav(t){
@@ -909,7 +958,7 @@ function renderBackground(t){
     dot.className = 't-dot';
     const node = document.createElement('div');
     node.className = 't-node';
-    node.innerHTML = `<div class="t-year">${item.year}</div><div class="t-title">${item.title}<span class="click-hint">${t.background.clickHint}</span></div><div class="t-org">${item.org}</div>`;
+    node.innerHTML = `<div class="t-year">${item.year}</div><div class="t-title">${item.title}<span class="click-hint">${t.background.clickHint}</span><span class="tap-icon" aria-hidden="true"></span></div><div class="t-org">${item.org}</div>`;
     const cancelClose = ()=> clearTimeout(tmCloseTimeout);
     const scheduleClose = ()=>{
       tmCloseTimeout = setTimeout(closeTimelineModal, 320);
@@ -951,6 +1000,18 @@ function openTimelineModal(idx){
     slot.appendChild(img);
     img.addEventListener('mouseenter', ()=> showPhotoZoom(img.src));
     img.addEventListener('mouseleave', hidePhotoZoom);
+    // Touch devices have no hover state, so the zoom preview above would
+    // otherwise be unreachable there. On those devices only, a tap toggles
+    // it instead (checked via matchMedia so real mouse users keep the
+    // unchanged hover behavior).
+    if(!supportsHoverPointer){
+      img.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        const el = getPhotoZoomEl();
+        const alreadyShowingThis = el.classList.contains('show') && el.querySelector('img').src === img.src;
+        if(alreadyShowingThis) hidePhotoZoom(); else showPhotoZoom(img.src);
+      });
+    }
     media.appendChild(slot);
   });
   document.getElementById('tmOverlay').classList.add('open');
@@ -1028,10 +1089,20 @@ function buildInfiniteCarousel(track, items, perView, renderItem, autoDir, autoM
 }
 
 let trainingCarousel = null;
+// Below this width, cards/pills packed at the desktop count would shrink to
+// unreadably narrow slivers, so carousels show fewer items per view instead.
+// Both the JS step math and the CSS width formula read this same number
+// (via the --train-per-view / --skill-per-view custom property set below),
+// so they can never disagree the way the Pac-Man dots once did.
+const MOBILE_CAROUSEL_BREAKPOINT = 480;
+function isMobileCarouselWidth(){ return window.innerWidth <= MOBILE_CAROUSEL_BREAKPOINT; }
+
 function renderTraining(t){
   document.getElementById('trainLabel').textContent = t.training.label;
   document.getElementById('trainTitle').textContent = t.training.title;
   const track = document.getElementById('trainTrack');
+  const perView = isMobileCarouselWidth() ? 1 : 3;
+  track.style.setProperty('--train-per-view', perView);
   function makeCard(item){
     const card = document.createElement('div');
     card.className = 'training-card';
@@ -1039,13 +1110,15 @@ function renderTraining(t){
     return card;
   }
   if(trainingCarousel) trainingCarousel.stop();
-  trainingCarousel = buildInfiniteCarousel(track, t.training.items, 3, makeCard, 1, 5000);
+  trainingCarousel = buildInfiniteCarousel(track, t.training.items, perView, makeCard, 1, 5000);
 }
 
 let skillsCarousel = null;
 function renderTrainingSkills(t){
   document.getElementById('skillsSubTitle').textContent = t.training.skillsTitle;
   const track = document.getElementById('skillsTrack');
+  const perView = isMobileCarouselWidth() ? 3 : 7;
+  track.style.setProperty('--skill-per-view', perView);
   function makePill(name){
     const el = document.createElement('div');
     el.className = 'skill-pill';
@@ -1053,7 +1126,7 @@ function renderTrainingSkills(t){
     return el;
   }
   if(skillsCarousel) skillsCarousel.stop();
-  skillsCarousel = buildInfiniteCarousel(track, t.training.skillsItems, 7, makePill, -1, 4000);
+  skillsCarousel = buildInfiniteCarousel(track, t.training.skillsItems, perView, makePill, -1, 4000);
 }
 
 let currentProjectItems = [];
@@ -1449,6 +1522,23 @@ function updatePacman(){
 measureDotCenters();
 window.addEventListener('scroll', updatePacman, {passive:true});
 window.addEventListener('resize', ()=>{ measureDotCenters(); updatePacman(); });
+
+// Rebuild the Training/Skills carousels only when a resize (e.g. rotating a
+// phone) actually crosses the mobile carousel breakpoint, not on every pixel.
+let lastCarouselWidthTier = isMobileCarouselWidth();
+let carouselResizeTimer = null;
+window.addEventListener('resize', ()=>{
+  clearTimeout(carouselResizeTimer);
+  carouselResizeTimer = setTimeout(()=>{
+    const nowMobile = isMobileCarouselWidth();
+    if(nowMobile !== lastCarouselWidthTier){
+      lastCarouselWidthTier = nowMobile;
+      const t = CONTENT[currentLang];
+      renderTraining(t);
+      renderTrainingSkills(t);
+    }
+  }, 200);
+});
 
 render();
 updatePacman();
