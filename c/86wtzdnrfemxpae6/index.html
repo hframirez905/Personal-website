@@ -46,7 +46,7 @@ a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent;}
   .card{min-height:0;border-radius:34px;box-shadow:0 24px 60px rgba(47,26,69,.28);}
 }
 
-/* purple band with the domain on it */
+/* purple band with the domain and the language switcher */
 .band{
   position:relative;overflow:hidden;background:var(--purple);color:#fff;
   height:176px;padding:max(30px,calc(env(safe-area-inset-top) + 18px)) 26px 0;
@@ -57,6 +57,13 @@ a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent;}
   position:relative;z-index:1;display:inline-block;
   font-family:'Oswald',sans-serif;font-weight:500;font-size:15px;letter-spacing:.12em;text-transform:uppercase;
 }
+.langs{position:relative;z-index:3;display:flex;gap:6px;margin-top:14px;}
+.langs button{
+  min-width:40px;height:30px;padding:0 10px;border-radius:999px;cursor:pointer;
+  background:rgba(255,255,255,.14);color:#fff;border:1.5px solid rgba(255,255,255,.55);
+  font-family:'Oswald',sans-serif;font-weight:500;font-size:13px;letter-spacing:.1em;
+}
+.langs button[aria-pressed="true"]{background:#fff;color:var(--purple);border-color:#fff;}
 
 /* circular photo, overlapping the band */
 .photo{
@@ -93,7 +100,7 @@ a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent;}
 .btns{display:grid;gap:10px;margin-top:18px;}
 .btn{
   display:flex;align-items:center;justify-content:center;gap:10px;
-  height:52px;border-radius:999px;cursor:pointer;
+  height:52px;border-radius:999px;cursor:pointer;text-align:center;
   font-family:'Oswald',sans-serif;font-weight:600;font-size:16.5px;letter-spacing:.1em;text-transform:uppercase;
   -webkit-appearance:none;appearance:none;
 }
@@ -102,8 +109,15 @@ a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent;}
 .btn.share{background:#fff;color:var(--purple);border:2px solid var(--purple);}
 .btn:active{opacity:.85;}
 
-/* "keep it on your phone" */
-.keep{margin-top:18px;text-align:center;}
+/* download the card as PDF / picture */
+.save{margin-top:16px;}
+.save-h{text-align:center;font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:.72;margin-bottom:8px;}
+.save-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.btn.sm{height:46px;font-size:15px;background:var(--lilac);color:var(--purple);border:2px solid var(--lilac);}
+.btn.sm:active{background:#E3DAF0;}
+
+/* "keep it on your device" */
+.keep{margin-top:12px;text-align:center;}
 .keep button.link{
   background:none;border:0;cursor:pointer;color:var(--muted);
   font:600 13px 'Libre Franklin',sans-serif;letter-spacing:.04em;text-decoration:underline;text-underline-offset:3px;padding:8px;
@@ -153,42 +167,62 @@ body.standalone .keep{display:none;}
 <main class="card">
   <header class="band">
     <a class="domain" href="https://www.hectorfeliperamirez.com" target="_blank" rel="noopener noreferrer">hectorfeliperamirez.com</a>
+    <div class="langs" id="langs" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" data-lang="es" aria-pressed="false">ES</button>
+      <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+      <button type="button" data-lang="sv" aria-pressed="false">SV</button>
+    </div>
   </header>
-  <div class="photo" role="img" aria-label="Portrait of Hector Felipe Ramirez"></div>
+  <div class="photo" role="img" aria-label="Portrait of Hector Felipe Ramirez" data-aria="aPhoto"></div>
 
   <section class="body">
     <h1 class="name">Hector Felipe Ramirez</h1>
-    <p class="tagline">I am a translator - not of languages - but of ideas into action.</p>
+    <p class="tagline" data-t="tagline">I am a translator - not of languages - but of ideas into action.</p>
 
     <nav class="rows" aria-label="Contact">
-      <a class="row" href="https://wa.me/573115763739" target="_blank" rel="noopener noreferrer" aria-label="Open a WhatsApp chat with Hector, +57 311 576 3739">
+      <a class="row" href="https://wa.me/573115763739" target="_blank" rel="noopener noreferrer" aria-label="Open a WhatsApp chat with Hector, +57 311 576 3739" data-aria="aWa">
         <span class="chip"><img src="icon-whatsapp.png" alt=""></span>
-        <span class="txt"><span class="lab">WhatsApp</span><br><span class="val">+57 311 576 3739</span></span>
+        <span class="txt"><span class="lab" data-t="lWa">WhatsApp</span><br><span class="val">+57 311 576 3739</span></span>
       </a>
-      <a class="row" href="mailto:hframirez905@gmail.com" aria-label="Send an email to hframirez905@gmail.com">
+      <a class="row" href="mailto:hframirez905@gmail.com" aria-label="Send an email to hframirez905@gmail.com" data-aria="aMail">
         <span class="chip"><img src="icon-gmail.png" alt=""></span>
-        <span class="txt"><span class="lab">Email</span><br><span class="val">hframirez905@gmail.com</span></span>
+        <span class="txt"><span class="lab" data-t="lMail">Email</span><br><span class="val">hframirez905@gmail.com</span></span>
       </a>
-      <a class="row" href="https://www.linkedin.com/in/hector-felipe-ramirez-11182067/" target="_blank" rel="noopener noreferrer" aria-label="Open Hector's LinkedIn profile">
+      <a class="row" href="https://www.linkedin.com/in/hector-felipe-ramirez-11182067/" target="_blank" rel="noopener noreferrer" aria-label="Open Hector's LinkedIn profile" data-aria="aLi">
         <span class="chip"><img src="icon-linkedin.png" alt=""></span>
-        <span class="txt"><span class="lab">LinkedIn</span><br><span class="val">Hector Felipe Ramirez</span></span>
+        <span class="txt"><span class="lab" data-t="lLi">LinkedIn</span><br><span class="val">Hector Felipe Ramirez</span></span>
       </a>
-      <a class="row" href="https://www.hectorfeliperamirez.com" target="_blank" rel="noopener noreferrer" aria-label="Open the website www.hectorfeliperamirez.com">
+      <a class="row" href="https://www.hectorfeliperamirez.com" target="_blank" rel="noopener noreferrer" aria-label="Open the website www.hectorfeliperamirez.com" data-aria="aWeb">
         <span class="chip"><img src="icon-www.png" alt=""></span>
-        <span class="txt"><span class="lab">Website</span><br><span class="val">www.hectorfeliperamirez.com</span></span>
+        <span class="txt"><span class="lab" data-t="lWeb">Website</span><br><span class="val">www.hectorfeliperamirez.com</span></span>
       </a>
     </nav>
 
     <div class="btns">
-      <a class="btn add" href="hector-felipe-ramirez.vcf" id="addBtn">+ Add to my contacts</a>
+      <a class="btn add" href="hector-felipe-ramirez.vcf" id="addBtn" data-t="add">+ Add to my contacts</a>
       <button class="btn share" type="button" id="shareBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M5 14v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5"/></svg>
-        Share card
+        <span data-t="share">Share card</span>
       </button>
     </div>
 
+    <div class="save" id="save">
+      <p class="save-h" data-t="dlHead">Download the card</p>
+      <div class="save-btns">
+        <a class="btn sm" id="dlPdf" href="card-en.pdf" download="Hector-Felipe-Ramirez-card-en.pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+          <span data-t="dlPdf">PDF</span>
+        </a>
+        <a class="btn sm" id="dlPic" href="card-en.png" download="Hector-Felipe-Ramirez-card-en.png">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+          <span data-t="dlPic">Picture</span>
+        </a>
+      </div>
+    </div>
+
     <div class="keep" id="keep">
-      <button class="link" type="button" id="keepBtn" aria-expanded="false" aria-controls="keepPanel">Keep this card on your phone</button>
+      <button class="link" type="button" id="keepBtn" aria-expanded="false" aria-controls="keepPanel" data-t="keep">Keep this card on your device</button>
       <div class="panel" id="keepPanel"></div>
     </div>
   </section>
@@ -196,25 +230,154 @@ body.standalone .keep{display:none;}
 
 <div class="sheet-bg" id="sheetBg"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-hidden="true">
-  <h2 id="sheetTitle">Share this card</h2>
+  <h2 id="sheetTitle" data-t="shTitle">Share this card</h2>
   <div class="opts">
-    <a class="opt" id="shWa" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-    <a class="opt" id="shMail">Email</a>
-    <a class="opt" id="shMsgr">Facebook Messenger</a>
-    <a class="opt" id="shSms">Text message</a>
-    <button class="opt" type="button" id="shCopy">Copy link</button>
+    <a class="opt" id="shWa" target="_blank" rel="noopener noreferrer" data-t="shWa">WhatsApp</a>
+    <a class="opt" id="shMail" data-t="shMail">Email</a>
+    <a class="opt" id="shMsgr" data-t="shMsgr">Facebook Messenger</a>
+    <a class="opt" id="shSms" data-t="shSms">Text message</a>
+    <button class="opt" type="button" id="shCopy" data-t="shCopy">Copy link</button>
   </div>
-  <p class="note">On a phone, the Share button opens your phone's own share menu, which also lists LinkedIn messages, Instagram and any other app you have installed.</p>
-  <button class="close" type="button" id="shClose">Close</button>
+  <p class="note" data-t="shNote"></p>
+  <button class="close" type="button" id="shClose" data-t="close">Close</button>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
-  var CARD_URL = location.href.split('#')[0];
-  var SHARE_TITLE = 'Hector Felipe Ramirez';
-  var SHARE_TEXT = 'Hector Felipe Ramirez - digital business card';
+  var CARD_URL = location.origin + location.pathname;     /* never carries ?lang= */
+
+  /* ---------- translations (EN is the fallback) ---------- */
+  var I18N = {
+    en: {
+      docTitle: 'Hector Felipe Ramirez',
+      tagline: 'I am a translator - not of languages - but of ideas into action.',
+      lWa: 'WhatsApp', lMail: 'Email', lLi: 'LinkedIn', lWeb: 'Website',
+      add: '+ Add to my contacts', share: 'Share card',
+      dlHead: 'Download the card', dlPdf: 'PDF', dlPic: 'Picture',
+      keep: 'Keep this card on your device',
+      keepHead: 'Save it as an icon on your home screen.',
+      keepIos: 'In Safari, tap the <strong>Share</strong> icon, then <strong>Add to Home Screen</strong>.',
+      keepInstall: 'One tap installs it like an app.',
+      keepInstallBtn: 'Add to home screen',
+      keepOther: 'Open your browser menu (the three dots), then choose <strong>Add to Home screen</strong> or <strong>Install app</strong>.',
+      keepTip: 'Tip: <strong>+ Add to my contacts</strong> saves my name, photo, phone, email and website to your contacts.',
+      shTitle: 'Share this card', shWa: 'WhatsApp', shMail: 'Email', shMsgr: 'Facebook Messenger', shSms: 'Text message', shCopy: 'Copy link',
+      shNote: "On most devices the Share button opens the device's own share menu, which also lists LinkedIn messages, Instagram and any other app you have installed.",
+      close: 'Close', copied: 'Link copied', copyPrompt: 'Copy this link:',
+      shareText: 'Hector Felipe Ramirez - digital business card', mailSubject: 'Hector Felipe Ramirez - business card',
+      aWa: 'Open a WhatsApp chat with Hector, +57 311 576 3739', aMail: 'Send an email to hframirez905@gmail.com',
+      aLi: "Open Hector's LinkedIn profile", aWeb: 'Open the website www.hectorfeliperamirez.com',
+      aPhoto: 'Portrait of Hector Felipe Ramirez', aLang: 'Language'
+    },
+    es: {
+      docTitle: 'Hector Felipe Ramirez',
+      tagline: 'Soy un traductor - no de idiomas - sino de ideas en acción.',
+      lWa: 'WhatsApp', lMail: 'Correo', lLi: 'LinkedIn', lWeb: 'Sitio web',
+      add: '+ Añadir a mis contactos', share: 'Compartir tarjeta',
+      dlHead: 'Descargar la tarjeta', dlPdf: 'PDF', dlPic: 'Imagen',
+      keep: 'Guarda esta tarjeta en tu dispositivo',
+      keepHead: 'Guárdala como un icono en tu pantalla de inicio.',
+      keepIos: 'En Safari, toca el icono de <strong>Compartir</strong> y luego <strong>Añadir a pantalla de inicio</strong>.',
+      keepInstall: 'Con un toque se instala como una app.',
+      keepInstallBtn: 'Añadir a la pantalla de inicio',
+      keepOther: 'Abre el menú del navegador (los tres puntos) y elige <strong>Añadir a pantalla de inicio</strong> o <strong>Instalar app</strong>.',
+      keepTip: 'Consejo: <strong>+ Añadir a mis contactos</strong> guarda mi nombre, foto, teléfono, correo y sitio web en tus contactos.',
+      shTitle: 'Compartir esta tarjeta', shWa: 'WhatsApp', shMail: 'Correo electrónico', shMsgr: 'Facebook Messenger', shSms: 'Mensaje de texto', shCopy: 'Copiar enlace',
+      shNote: 'En la mayoría de los dispositivos, el botón Compartir abre el menú de compartir del propio dispositivo, que también incluye mensajes de LinkedIn, Instagram y cualquier otra app que tengas instalada.',
+      close: 'Cerrar', copied: 'Enlace copiado', copyPrompt: 'Copia este enlace:',
+      shareText: 'Hector Felipe Ramirez - tarjeta de presentación digital', mailSubject: 'Hector Felipe Ramirez - tarjeta de presentación',
+      aWa: 'Abrir un chat de WhatsApp con Hector, +57 311 576 3739', aMail: 'Enviar un correo a hframirez905@gmail.com',
+      aLi: 'Abrir el perfil de LinkedIn de Hector', aWeb: 'Abrir el sitio web www.hectorfeliperamirez.com',
+      aPhoto: 'Retrato de Hector Felipe Ramirez', aLang: 'Idioma'
+    },
+    fr: {
+      docTitle: 'Hector Felipe Ramirez',
+      tagline: "Je suis un traducteur - non pas de langues - mais d'idées en actions.",
+      lWa: 'WhatsApp', lMail: 'E-mail', lLi: 'LinkedIn', lWeb: 'Site web',
+      add: '+ Ajouter à mes contacts', share: 'Partager la carte',
+      dlHead: 'Télécharger la carte', dlPdf: 'PDF', dlPic: 'Image',
+      keep: 'Garder cette carte sur votre appareil',
+      keepHead: "Enregistrez-la comme icône sur votre écran d'accueil.",
+      keepIos: "Dans Safari, touchez l'icône <strong>Partager</strong>, puis <strong>Sur l'écran d'accueil</strong>.",
+      keepInstall: "Un seul geste l'installe comme une application.",
+      keepInstallBtn: "Ajouter à l'écran d'accueil",
+      keepOther: "Ouvrez le menu du navigateur (les trois points), puis choisissez <strong>Ajouter à l'écran d'accueil</strong> ou <strong>Installer l'application</strong>.",
+      keepTip: 'Astuce : <strong>+ Ajouter à mes contacts</strong> enregistre mon nom, ma photo, mon téléphone, mon e-mail et mon site web dans vos contacts.',
+      shTitle: 'Partager cette carte', shWa: 'WhatsApp', shMail: 'E-mail', shMsgr: 'Facebook Messenger', shSms: 'SMS', shCopy: 'Copier le lien',
+      shNote: "Sur la plupart des appareils, le bouton Partager ouvre le menu de partage de l'appareil, qui propose aussi les messages LinkedIn, Instagram et toute autre application installée.",
+      close: 'Fermer', copied: 'Lien copié', copyPrompt: 'Copiez ce lien :',
+      shareText: 'Hector Felipe Ramirez - carte de visite numérique', mailSubject: 'Hector Felipe Ramirez - carte de visite',
+      aWa: 'Ouvrir une discussion WhatsApp avec Hector, +57 311 576 3739', aMail: 'Envoyer un e-mail à hframirez905@gmail.com',
+      aLi: 'Ouvrir le profil LinkedIn de Hector', aWeb: 'Ouvrir le site web www.hectorfeliperamirez.com',
+      aPhoto: 'Portrait de Hector Felipe Ramirez', aLang: 'Langue'
+    },
+    sv: {
+      docTitle: 'Hector Felipe Ramirez',
+      tagline: 'Jag är en översättare - inte av språk - utan av idéer till handling.',
+      lWa: 'WhatsApp', lMail: 'E-post', lLi: 'LinkedIn', lWeb: 'Webbplats',
+      add: '+ Lägg till i mina kontakter', share: 'Dela kortet',
+      dlHead: 'Ladda ner kortet', dlPdf: 'PDF', dlPic: 'Bild',
+      keep: 'Spara kortet på din enhet',
+      keepHead: 'Spara det som en ikon på din hemskärm.',
+      keepIos: 'Tryck på ikonen <strong>Dela</strong> i Safari och välj sedan <strong>Lägg till på hemskärmen</strong>.',
+      keepInstall: 'Med ett tryck installeras det som en app.',
+      keepInstallBtn: 'Lägg till på hemskärmen',
+      keepOther: 'Öppna webbläsarens meny (de tre prickarna) och välj <strong>Lägg till på startskärmen</strong> eller <strong>Installera app</strong>.',
+      keepTip: 'Tips: <strong>+ Lägg till i mina kontakter</strong> sparar mitt namn, foto, telefonnummer, e-post och webbplats i dina kontakter.',
+      shTitle: 'Dela det här kortet', shWa: 'WhatsApp', shMail: 'E-post', shMsgr: 'Facebook Messenger', shSms: 'Sms', shCopy: 'Kopiera länk',
+      shNote: 'På de flesta enheter öppnar knappen Dela enhetens egen delningsmeny, som även visar LinkedIn-meddelanden, Instagram och andra appar du har installerade.',
+      close: 'Stäng', copied: 'Länken kopierades', copyPrompt: 'Kopiera den här länken:',
+      shareText: 'Hector Felipe Ramirez - digitalt visitkort', mailSubject: 'Hector Felipe Ramirez - visitkort',
+      aWa: 'Öppna en WhatsApp-chatt med Hector, +57 311 576 3739', aMail: 'Skicka e-post till hframirez905@gmail.com',
+      aLi: 'Öppna Hectors LinkedIn-profil', aWeb: 'Öppna webbplatsen www.hectorfeliperamirez.com',
+      aPhoto: 'Porträtt av Hector Felipe Ramirez', aLang: 'Språk'
+    }
+  };
+  var SUPPORTED = ['en', 'es', 'fr', 'sv'];
+  var STORE_KEY = 'card-lang';
+  var LANG = 'en';
+
+  function supported(code) {
+    var c = String(code || '').toLowerCase().slice(0, 2);
+    return SUPPORTED.indexOf(c) > -1 ? c : null;
+  }
+  function detectLang() {
+    var q = null;
+    try { q = supported(new URLSearchParams(location.search).get('lang')); } catch (e) {}
+    if (q) return q;
+    try { var s = supported(localStorage.getItem(STORE_KEY)); if (s) return s; } catch (e) {}
+    var list = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || 'en'];
+    for (var i = 0; i < list.length; i++) { var m = supported(list[i]); if (m) return m; }
+    return 'en';
+  }
+  function T(key) { return (I18N[LANG] && I18N[LANG][key]) || I18N.en[key] || ''; }
+
+  function applyLang(code) {
+    LANG = supported(code) || 'en';
+    document.documentElement.lang = LANG;
+    document.title = T('docTitle');
+    [].forEach.call(document.querySelectorAll('[data-t]'), function (el) { el.textContent = T(el.getAttribute('data-t')); });
+    [].forEach.call(document.querySelectorAll('[data-aria]'), function (el) { el.setAttribute('aria-label', T(el.getAttribute('data-aria'))); });
+    $('langs').setAttribute('aria-label', T('aLang'));
+    $('dlPdf').href = 'card-' + LANG + '.pdf';
+    $('dlPdf').setAttribute('download', 'Hector-Felipe-Ramirez-card-' + LANG + '.pdf');
+    $('dlPic').href = 'card-' + LANG + '.png';
+    $('dlPic').setAttribute('download', 'Hector-Felipe-Ramirez-card-' + LANG + '.png');
+    [].forEach.call(document.querySelectorAll('#langs button'), function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === LANG));
+    });
+    if ($('keepPanel').classList.contains('open')) renderKeep();
+  }
+
+  [].forEach.call(document.querySelectorAll('#langs button'), function (b) {
+    b.addEventListener('click', function () {
+      var code = b.getAttribute('data-lang');
+      try { localStorage.setItem(STORE_KEY, code); } catch (e) {}
+      applyLang(code);
+    });
+  });
 
   function toast(msg) {
     var t = $('toast'); t.textContent = msg; t.classList.add('show');
@@ -224,9 +387,9 @@ body.standalone .keep{display:none;}
   /* ---------- share ---------- */
   var sheet = $('sheet'), sheetBg = $('sheetBg');
   function openSheet() {
-    var enc = encodeURIComponent, msg = SHARE_TEXT + ' ' + CARD_URL;
+    var enc = encodeURIComponent, msg = T('shareText') + ' ' + CARD_URL;
     $('shWa').href = 'https://wa.me/?text=' + enc(msg);
-    $('shMail').href = 'mailto:?subject=' + enc(SHARE_TITLE + ' - business card') + '&body=' + enc(msg);
+    $('shMail').href = 'mailto:?subject=' + enc(T('mailSubject')) + '&body=' + enc(msg);
     $('shMsgr').href = 'fb-messenger://share/?link=' + enc(CARD_URL);
     $('shSms').href = 'sms:?&body=' + enc(msg);
     sheet.classList.add('open'); sheetBg.classList.add('open'); sheet.setAttribute('aria-hidden', 'false');
@@ -236,7 +399,7 @@ body.standalone .keep{display:none;}
   }
   $('shareBtn').addEventListener('click', function () {
     if (navigator.share) {
-      navigator.share({ title: SHARE_TITLE, text: SHARE_TEXT, url: CARD_URL }).catch(function (e) {
+      navigator.share({ title: T('docTitle'), text: T('shareText'), url: CARD_URL }).catch(function (e) {
         if (e && e.name !== 'AbortError') openSheet();
       });
     } else {
@@ -247,15 +410,15 @@ body.standalone .keep{display:none;}
   sheetBg.addEventListener('click', closeSheet);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
   $('shCopy').addEventListener('click', function () {
-    function done() { closeSheet(); toast('Link copied'); }
+    function done() { closeSheet(); toast(T('copied')); }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(CARD_URL).then(done, function () { window.prompt('Copy this link:', CARD_URL); });
+      navigator.clipboard.writeText(CARD_URL).then(done, function () { window.prompt(T('copyPrompt'), CARD_URL); });
     } else {
-      window.prompt('Copy this link:', CARD_URL);
+      window.prompt(T('copyPrompt'), CARD_URL);
     }
   });
 
-  /* ---------- keep it on your phone ---------- */
+  /* ---------- keep it on your device ---------- */
   var standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
   if (standalone) document.body.classList.add('standalone');
 
@@ -263,29 +426,49 @@ body.standalone .keep{display:none;}
   window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; });
 
   var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  /* iPhone/iPad: a plain download lands in Files, so offer the picture through the share sheet,
+     which has "Save Image" (goes to Photos). Falls back to a normal download. */
+  $('dlPic').addEventListener('click', function (e) {
+    if (!isIOS || !navigator.share || !navigator.canShare) return;
+    e.preventDefault();
+    var href = this.href;
+    fetch(href).then(function (r) { return r.blob(); }).then(function (b) {
+      var f = new File([b], 'Hector-Felipe-Ramirez-card-' + LANG + '.png', { type: 'image/png' });
+      if (navigator.canShare({ files: [f] })) return navigator.share({ files: [f] });
+      window.open(href, '_blank');
+    }).catch(function (err) {
+      if (err && err.name === 'AbortError') return;
+      window.open(href, '_blank');
+    });
+  });
+
   var keepBtn = $('keepBtn'), keepPanel = $('keepPanel');
+
+  function renderKeep() {
+    var html = '<strong>' + T('keepHead') + '</strong><br>';
+    if (isIOS) {
+      html += T('keepIos');
+    } else if (deferred) {
+      html += T('keepInstall') + '<br><button class="btn add" type="button" id="installBtn">' + T('keepInstallBtn') + '</button>';
+    } else {
+      html += T('keepOther');
+    }
+    html += '<br><br>' + T('keepTip');
+    keepPanel.innerHTML = html;
+    var ib = $('installBtn');
+    if (ib) ib.addEventListener('click', function () {
+      deferred.prompt();
+      deferred.userChoice.then(function () { deferred = null; keepPanel.classList.remove('open'); keepBtn.setAttribute('aria-expanded', 'false'); });
+    });
+  }
   keepBtn.addEventListener('click', function () {
     var open = !keepPanel.classList.contains('open');
-    if (open) {
-      var html = '<strong>Save it as an icon on your home screen.</strong><br>';
-      if (isIOS) {
-        html += 'In Safari, tap the <strong>Share</strong> icon, then <strong>Add to Home Screen</strong>.';
-      } else if (deferred) {
-        html += 'One tap installs it like an app.<br><button class="btn add" type="button" id="installBtn">Add to home screen</button>';
-      } else {
-        html += 'Open your browser menu (the three dots), then choose <strong>Add to Home screen</strong> or <strong>Install app</strong>.';
-      }
-      html += '<br><br>Tip: <strong>+ Add to my contacts</strong> saves my name, photo, phone, email and website to your phone book.';
-      keepPanel.innerHTML = html;
-      var ib = $('installBtn');
-      if (ib) ib.addEventListener('click', function () {
-        deferred.prompt();
-        deferred.userChoice.then(function () { deferred = null; keepPanel.classList.remove('open'); keepBtn.setAttribute('aria-expanded', 'false'); });
-      });
-    }
+    if (open) renderKeep();
     keepPanel.classList.toggle('open', open);
     keepBtn.setAttribute('aria-expanded', String(open));
   });
+
+  applyLang(detectLang());
 })();
 </script>
 </body>
