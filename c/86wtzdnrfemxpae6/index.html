@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hector Felipe Ramirez</title>
+<meta name="description" content="Hector Felipe Ramirez: a translator of ideas into action.">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#2F1A45">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Hector">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Libre+Franklin:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#2F1A45;      /* Pantone 2695C, RGB 47/26/69 */
+  --purple-2:#432660;
+  --lilac:#EEE8F6;
+  --white:#FFFFFF;
+  --muted:#5A4770;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  font-family:'Libre Franklin',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  background:var(--lilac);color:var(--purple);
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;min-height:100dvh;
+}
+a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent;}
+:focus-visible{outline:3px solid var(--purple);outline-offset:3px;border-radius:12px;}
+
+.card{
+  position:relative;overflow:hidden;background:#fff;
+  width:100%;max-width:440px;margin:0 auto;
+  min-height:100vh;min-height:100dvh;
+  padding-bottom:max(24px,env(safe-area-inset-bottom));
+}
+@media (min-width:480px){
+  body{padding:28px 0;}
+  .card{min-height:0;border-radius:34px;box-shadow:0 24px 60px rgba(47,26,69,.28);}
+}
+
+/* purple band with the domain on it */
+.band{
+  position:relative;overflow:hidden;background:var(--purple);color:#fff;
+  height:176px;padding:max(30px,calc(env(safe-area-inset-top) + 18px)) 26px 0;
+}
+.band:before{content:"";position:absolute;right:-60px;top:-90px;width:260px;height:260px;border-radius:50%;background:var(--purple-2);}
+.band:after{content:"";position:absolute;left:-70px;bottom:-110px;width:230px;height:230px;border-radius:50%;background:var(--purple-2);opacity:.55;}
+.domain{
+  position:relative;z-index:1;display:inline-block;
+  font-family:'Oswald',sans-serif;font-weight:500;font-size:15px;letter-spacing:.12em;text-transform:uppercase;
+}
+
+/* circular photo, overlapping the band */
+.photo{
+  position:absolute;z-index:2;right:26px;top:108px;
+  width:136px;height:136px;border-radius:50%;
+  border:5px solid #fff;box-shadow:0 10px 24px rgba(47,26,69,.3);
+  background:#d9d2e3 url('portrait.jpg') center/cover no-repeat;
+}
+
+.body{padding:20px 26px 0;}
+.name{
+  font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;
+  font-size:34px;line-height:1.05;letter-spacing:.05em;
+  max-width:calc(100% - 160px);margin-top:6px;
+}
+.tagline{font-size:14px;font-style:italic;line-height:1.45;color:var(--muted);margin:22px 0 18px;}
+
+.rows{display:grid;gap:9px;}
+.row{
+  display:flex;align-items:center;gap:14px;
+  background:var(--lilac);border-radius:18px;padding:8px 14px 8px 8px;
+  transition:transform .12s ease, background .12s ease;
+}
+.row:active{transform:scale(.985);background:#E3DAF0;}
+.chip{
+  width:46px;height:46px;border-radius:50%;background:#fff;flex:none;
+  display:grid;place-items:center;box-shadow:0 1px 0 rgba(47,26,69,.12);
+}
+.chip img{width:28px;height:28px;object-fit:contain;display:block;}
+.txt{min-width:0;}
+.lab{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:.72;line-height:1.2;}
+.val{font-size:15.5px;font-weight:600;line-height:1.25;overflow-wrap:anywhere;}
+
+.btns{display:grid;gap:10px;margin-top:18px;}
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  height:52px;border-radius:999px;cursor:pointer;
+  font-family:'Oswald',sans-serif;font-weight:600;font-size:16.5px;letter-spacing:.1em;text-transform:uppercase;
+  -webkit-appearance:none;appearance:none;
+}
+.btn svg{width:19px;height:19px;flex:none;}
+.btn.add{background:var(--purple);color:#fff;border:2px solid var(--purple);}
+.btn.share{background:#fff;color:var(--purple);border:2px solid var(--purple);}
+.btn:active{opacity:.85;}
+
+/* "keep it on your phone" */
+.keep{margin-top:18px;text-align:center;}
+.keep button.link{
+  background:none;border:0;cursor:pointer;color:var(--muted);
+  font:600 13px 'Libre Franklin',sans-serif;letter-spacing:.04em;text-decoration:underline;text-underline-offset:3px;padding:8px;
+}
+.keep .panel{
+  display:none;margin-top:6px;background:var(--lilac);border-radius:16px;padding:14px 16px;
+  font-size:13.5px;line-height:1.5;color:var(--purple);text-align:left;
+}
+.keep .panel.open{display:block;}
+.keep .panel .btn{height:46px;margin-top:10px;font-size:15px;}
+body.standalone .keep{display:none;}
+
+/* share sheet fallback */
+.sheet-bg{position:fixed;inset:0;background:rgba(13,9,20,.55);display:none;z-index:50;}
+.sheet-bg.open{display:block;}
+.sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:51;max-width:440px;margin:0 auto;
+  background:#fff;border-radius:26px 26px 0 0;padding:20px 20px max(22px,env(safe-area-inset-bottom));
+  transform:translateY(105%);transition:transform .22s ease;
+  box-shadow:0 -12px 40px rgba(13,9,20,.3);
+}
+.sheet.open{transform:none;}
+.sheet h2{font-family:'Oswald',sans-serif;font-size:18px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
+.sheet .opts{display:grid;gap:8px;}
+.sheet .opt{
+  display:flex;align-items:center;gap:12px;background:var(--lilac);border:0;border-radius:14px;padding:13px 14px;
+  font:600 15.5px 'Libre Franklin',sans-serif;color:var(--purple);cursor:pointer;text-align:left;width:100%;
+}
+.sheet .note{font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.45;}
+.sheet .close{margin-top:12px;width:100%;height:46px;border-radius:999px;background:#fff;border:2px solid var(--purple);color:var(--purple);font:600 15px 'Oswald',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;}
+
+.toast{
+  position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  background:var(--purple);color:#fff;border-radius:999px;padding:11px 18px;font-size:14px;font-weight:600;z-index:60;
+  transition:opacity .2s ease, transform .2s ease;
+}
+.toast.show{opacity:1;transform:translate(-50%,0);}
+
+@media (max-width:360px){
+  .photo{width:116px;height:116px;top:116px;right:18px;}
+  .name{font-size:30px;max-width:calc(100% - 135px);}
+  .body,.band{padding-left:20px;padding-right:20px;}
+}
+</style>
+</head>
+<body>
+<main class="card">
+  <header class="band">
+    <a class="domain" href="https://www.hectorfeliperamirez.com" target="_blank" rel="noopener noreferrer">hectorfeliperamirez.com</a>
+  </header>
+  <div class="photo" role="img" aria-label="Portrait of Hector Felipe Ramirez"></div>
+
+  <section class="body">
+    <h1 class="name">Hector Felipe Ramirez</h1>
+    <p class="tagline">I am a translator - not of languages - but of ideas into action.</p>
+
+    <nav class="rows" aria-label="Contact">
+      <a class="row" href="https://wa.me/573115763739" target="_blank" rel="noopener noreferrer" aria-label="Open a WhatsApp chat with Hector, +57 311 576 3739">
+        <span class="chip"><img src="icon-whatsapp.png" alt=""></span>
+        <span class="txt"><span class="lab">WhatsApp</span><br><span class="val">+57 311 576 3739</span></span>
+      </a>
+      <a class="row" href="mailto:hframirez905@gmail.com" aria-label="Send an email to hframirez905@gmail.com">
+        <span class="chip"><img src="icon-gmail.png" alt=""></span>
+        <span class="txt"><span class="lab">Email</span><br><span class="val">hframirez905@gmail.com</span></span>
+      </a>
+      <a class="row" href="https://www.linkedin.com/in/hector-felipe-ramirez-11182067/" target="_blank" rel="noopener noreferrer" aria-label="Open Hector's LinkedIn profile">
+        <span class="chip"><img src="icon-linkedin.png" alt=""></span>
+        <span class="txt"><span class="lab">LinkedIn</span><br><span class="val">Hector Felipe Ramirez</span></span>
+      </a>
+      <a class="row" href="https://www.hectorfeliperamirez.com" target="_blank" rel="noopener noreferrer" aria-label="Open the website www.hectorfeliperamirez.com">
+        <span class="chip"><img src="icon-www.png" alt=""></span>
+        <span class="txt"><span class="lab">Website</span><br><span class="val">www.hectorfeliperamirez.com</span></span>
+      </a>
+    </nav>
+
+    <div class="btns">
+      <a class="btn add" href="hector-felipe-ramirez.vcf" id="addBtn">+ Add to my contacts</a>
+      <button class="btn share" type="button" id="shareBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M5 14v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5"/></svg>
+        Share card
+      </button>
+    </div>
+
+    <div class="keep" id="keep">
+      <button class="link" type="button" id="keepBtn" aria-expanded="false" aria-controls="keepPanel">Keep this card on your phone</button>
+      <div class="panel" id="keepPanel"></div>
+    </div>
+  </section>
+</main>
+
+<div class="sheet-bg" id="sheetBg"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-hidden="true">
+  <h2 id="sheetTitle">Share this card</h2>
+  <div class="opts">
+    <a class="opt" id="shWa" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+    <a class="opt" id="shMail">Email</a>
+    <a class="opt" id="shMsgr">Facebook Messenger</a>
+    <a class="opt" id="shSms">Text message</a>
+    <button class="opt" type="button" id="shCopy">Copy link</button>
+  </div>
+  <p class="note">On a phone, the Share button opens your phone's own share menu, which also lists LinkedIn messages, Instagram and any other app you have installed.</p>
+  <button class="close" type="button" id="shClose">Close</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var CARD_URL = location.href.split('#')[0];
+  var SHARE_TITLE = 'Hector Felipe Ramirez';
+  var SHARE_TEXT = 'Hector Felipe Ramirez - digital business card';
+
+  function toast(msg) {
+    var t = $('toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toast._t); toast._t = setTimeout(function () { t.classList.remove('show'); }, 2200);
+  }
+
+  /* ---------- share ---------- */
+  var sheet = $('sheet'), sheetBg = $('sheetBg');
+  function openSheet() {
+    var enc = encodeURIComponent, msg = SHARE_TEXT + ' ' + CARD_URL;
+    $('shWa').href = 'https://wa.me/?text=' + enc(msg);
+    $('shMail').href = 'mailto:?subject=' + enc(SHARE_TITLE + ' - business card') + '&body=' + enc(msg);
+    $('shMsgr').href = 'fb-messenger://share/?link=' + enc(CARD_URL);
+    $('shSms').href = 'sms:?&body=' + enc(msg);
+    sheet.classList.add('open'); sheetBg.classList.add('open'); sheet.setAttribute('aria-hidden', 'false');
+  }
+  function closeSheet() {
+    sheet.classList.remove('open'); sheetBg.classList.remove('open'); sheet.setAttribute('aria-hidden', 'true');
+  }
+  $('shareBtn').addEventListener('click', function () {
+    if (navigator.share) {
+      navigator.share({ title: SHARE_TITLE, text: SHARE_TEXT, url: CARD_URL }).catch(function (e) {
+        if (e && e.name !== 'AbortError') openSheet();
+      });
+    } else {
+      openSheet();
+    }
+  });
+  $('shClose').addEventListener('click', closeSheet);
+  sheetBg.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
+  $('shCopy').addEventListener('click', function () {
+    function done() { closeSheet(); toast('Link copied'); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(CARD_URL).then(done, function () { window.prompt('Copy this link:', CARD_URL); });
+    } else {
+      window.prompt('Copy this link:', CARD_URL);
+    }
+  });
+
+  /* ---------- keep it on your phone ---------- */
+  var standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+  if (standalone) document.body.classList.add('standalone');
+
+  var deferred = null;
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; });
+
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var keepBtn = $('keepBtn'), keepPanel = $('keepPanel');
+  keepBtn.addEventListener('click', function () {
+    var open = !keepPanel.classList.contains('open');
+    if (open) {
+      var html = '<strong>Save it as an icon on your home screen.</strong><br>';
+      if (isIOS) {
+        html += 'In Safari, tap the <strong>Share</strong> icon, then <strong>Add to Home Screen</strong>.';
+      } else if (deferred) {
+        html += 'One tap installs it like an app.<br><button class="btn add" type="button" id="installBtn">Add to home screen</button>';
+      } else {
+        html += 'Open your browser menu (the three dots), then choose <strong>Add to Home screen</strong> or <strong>Install app</strong>.';
+      }
+      html += '<br><br>Tip: <strong>+ Add to my contacts</strong> saves my name, photo, phone, email and website to your phone book.';
+      keepPanel.innerHTML = html;
+      var ib = $('installBtn');
+      if (ib) ib.addEventListener('click', function () {
+        deferred.prompt();
+        deferred.userChoice.then(function () { deferred = null; keepPanel.classList.remove('open'); keepBtn.setAttribute('aria-expanded', 'false'); });
+      });
+    }
+    keepPanel.classList.toggle('open', open);
+    keepBtn.setAttribute('aria-expanded', String(open));
+  });
+})();
+</script>
+</body>
+</html>
